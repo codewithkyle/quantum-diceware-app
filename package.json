@@ -2,7 +2,8 @@
   "scripts": {
     "build": "npm run build:client && npm run preview",
     "build:client": "esbuild ./src/main.ts --bundle --outfile=public/main.js && cssmonster",
-    "preview": "serve ./public"
+    "preview": "serve ./public",
+    "deploy": "node ./build/deploy.js"
   },
   "dependencies": {
     "@codewithkyle/notifyjs": "^2.1.1",
@@ -13,6 +14,7 @@
   },
   "devDependencies": {
     "cssmonster": "^0.3.1",
+    "gh-pages": "^3.1.0",
     "serve": "^11.3.2"
   }
 }

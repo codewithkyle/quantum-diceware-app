@@ -3,7 +3,7 @@ self.addEventListener('activate', event => event.waitUntil(onActivate(event)));
 self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
 
 const cacheNamePrefix = "offline-cache-";
-const version = "1.0.0";
+const version = "1.0.1";
 const cacheName = `${cacheNamePrefix}${version}`;
 const assets = [
     self.origin,
@@ -38,7 +38,6 @@ async function onActivate(event) {
 }
 
 async function onFetch(event) {
-    console.log(event.request);
     let cachedResponse = null;
     if (event.request.method === 'GET') {
         const shouldServeIndexHtml = event.request.mode === 'navigate';

@@ -12,10 +12,13 @@
     <link href="/css/input.css" rel="stylesheet">
     <link href="/css/tooltip.css" rel="stylesheet">
     <link href="/css/snackbar.css" rel="stylesheet">
+    <link href="/css/accordion.css" rel="stylesheet">
+    <link href="/css/link.css" rel="stylesheet">
     <script defer src="/main.js"></script>
     <style>
         body{
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            overflow-x: hidden;
         }
         input::-webkit-inner-spin-button,
         input::-webkit-input-placeholder,
@@ -33,14 +36,80 @@
         }
     </style>
 </head>
-<body class="m-0 w-screen py-6 px-1 bg-grey-200">
-    <main class="w-full max-w-tablet mx-auto">
+<body class="m-0 w-screen pt-6 px-1 bg-grey-200 min-h-screen">
+    <main class="w-full max-w-tablet mx-auto" style="min-height: calc(100vh - 8rem);">
         <h1 class="block text-center font-xl font-grey-700 line-normal mb-0.5 font-bold">Quantum Diceware Password Generator</h1>
-        <p class="block text-center font-grey-700 font-sm mb-3 line-normal">Generate truly random diceware passwords using a quantum computer.</p>
+        <p class="block text-center font-grey-700 font-sm mb-4 line-normal">Generate truly random diceware passwords using a quantum computer.</p>
         <password-generator>Loading...</password-generator>
-        <!-- Add Privacy FAQ Section -->
-        <!-- Add Security Section -->
-        <!-- Add Random Number Generator Source Section -->
+        <div class="block w-full p-0.5 mt-4 bg-white radius-0.5 shadow-md border-1 border-grey-100 border-solid">
+            <!-- Add General FAQ Section -->
+            <accordion-component class="mb-0.5">
+                <input type="checkbox" id="general-faq">
+                <label for="general-faq" class="w-full bttn px-0.5" kind="text" color="grey" shape="rounded" flex="justify-between">
+                    <span class="font-lg font-medium font-grey-800 text-none">General FAQs</span>
+                    <svg style="width: 18px;height:18px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                    </svg>
+                </label>
+                <div class="container">
+                    <dl class="p-0.5">
+                        <dt class="block font-medium font-grey-800 mb-0.25 line-normal">Do you store my generated passwords?</dt>
+                        <dd class="block font-grey-700 line-normal font-sm mb-1">Nope! Passwords are generated on your device and they will never be sent to our server.</dd>
+
+                        <dt class="block font-medium font-grey-800 mb-0.25 line-normal">What are Diceware passwords?</dt>
+                        <dd class="block font-grey-700 line-normal font-sm">Watch <a href="https://youtu.be/Pe_3cFuSw1E" target="_blank" rel="noopener" flex="items-center row nowrap" class="inline-flex">this Computerphile video<svg style="width:14px;height:14px;" class="ml-0.125" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg></a> to learn more about Diceware passwords.</dd>
+                    </dl>
+                </div>
+            </accordion-component>
+            <!-- Add Security Section -->
+            <accordion-component class="mb-0.5">
+                <input type="checkbox" id="security-faq">
+                <label for="security-faq" class="w-full bttn px-0.5" kind="text" color="grey" shape="rounded" flex="justify-between">
+                    <span class="font-lg font-medium font-grey-800 text-none">Security FAQs</span>
+                    <svg style="width: 18px;height:18px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                    </svg>
+                </label>
+                <div class="container">
+                    <dl class="p-0.5">
+                        <dt class="block font-medium font-grey-800 mb-0.25 line-normal">Are these passwords secure?</dt>
+                        <dd class="block font-grey-700 line-normal font-sm mb-1">They sure are! Watch <a href="https://youtu.be/Pe_3cFuSw1E?t=434" target="_blank" rel="noopener" flex="items-center row nowrap" class="inline-flex">this Computerphile video<svg style="width:14px;height:14px;" class="ml-0.125" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg></a> to learn about how secure Diceware passwords can be.</dd>
+
+                        <dt class="block font-medium font-grey-800 mb-0.25 line-normal">Should I roll the dice myself or use number generator?</dt>
+                        <dd class="block font-grey-700 line-normal font-sm mb-1">Both are great options. Just don't use passwords with numbers or words that you think up yourself. It's always more secure to use random values.</dd>
+
+                        <dt class="block font-medium font-grey-800 mb-0.25 line-normal">How are these random words "more secure"?</dt>
+                        <dd class="block font-grey-700 line-normal font-sm">Most of the time it's easier to "socially reverse engineer" someone's password by learning what numbers they prefer or what words they commonly use. Creating passwords constructed using words generated by truly random methods means it's less likely a malicious actor can guess your password.</dd>
+                    </dl>
+                </div>
+            </accordion-component>
+            <!-- Add Random Number Generator Source Section -->
+            <accordion-component>
+                <input type="checkbox" id="quantum-faq">
+                <label for="quantum-faq" class="w-full bttn px-0.5" kind="text" color="grey" shape="rounded" flex="justify-between">
+                    <span class="font-lg font-medium font-grey-800 text-none">Quantum FAQs</span>
+                    <svg style="width: 18px;height:18px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                    </svg>
+                </label>
+                <div class="container">
+                    <dl class="p-0.5">
+                        <dt class="block font-medium font-grey-800 mb-0.25 line-normal">How is this password generator quantum?</dt>
+                        <dd class="block font-grey-700 line-normal font-sm">The numbers used by this generator are generated in real-time at The Australian National University lab using lasers to measure the vacuum fluctuations. The technical details on how this is done can be found in <a href="https://anuquantumoptics.org/research-topics/quantum-information/quantum-random-number-generation" target="_blank" rel="noopener" flex="items-center row nowrap" class="inline-flex">their publications<svg style="width:14px;height:14px;" class="ml-0.125" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg></a>.</dd>
+                    </dl>
+                </div>
+            </accordion-component>
+        </div>
     </main>
+    <footer class="block text-center font-grey-700 font-xs">
+        <span>
+            &copy; 2021 
+            <a href="https://kyleandrews.dev/" target="_blank" rel="noopenre">Kyle Andrews</a>
+        </span>
+        |
+        <a href="https://github.com/codewithkyle/quantum-diceware-app" target="_blank" rel="noopenre">GitHub</a>
+        |
+        <a href="https://github.com/codewithkyle/quantum-diceware-app/issues/new" target="_blank" rel="noopenre">Report Issues</a>
+    </footer>
 </body>
 </html>

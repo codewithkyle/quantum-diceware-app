@@ -9233,6 +9233,7 @@
         this.trigger("NEXT");
       };
       this.restart = () => {
+        document?.activeElement?.blur();
         this.update({
           inputs: 1,
           words: [],
@@ -9324,6 +9325,8 @@
           break;
         case "INPUT":
           view = html`
+                    <p class="block w-full text-center font-sm font-grey-700 mb-0.5 line-normal">Roll a six-sided die 5 times and enter the result of each roll into the input below. If you don't have dice or time, click the auto-roll button to have a quantum computer generate random numbers for you.</p>
+                    <p class="block font-sm ${this.model.inputs < 5 ? "font-danger-600" : "font-grey-800"} text-center line-normal mb-1">For secure and rememberable passwords use at least 5 inputs.</p>
                     <form @submit=${this.generate} grid="columns 1 gap-1">
                         ${Array.from(Array(this.model.inputs)).map(() => {
             return html`<input-component></input-component>`;
@@ -9343,7 +9346,6 @@
                             </button>
                         </div>
                     </form>
-                    <p class="block font-sm ${this.model.inputs < 5 ? "font-danger-600" : "font-grey-800"} text-center line-normal mt-1">For secure and rememberable passwords use at least 5 inputs.</p>
                 `;
           break;
         case "OUTPUT":

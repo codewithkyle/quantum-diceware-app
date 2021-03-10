@@ -2,6 +2,7 @@ import { render, html } from "lit-html";
 import SuperComponent from "@codewithkyle/supercomponent";
 import diceware from "./diceware";
 import { refresh } from "tooltipper";
+import { snackbar } from "@codewithkyle/notifyjs";
 
 type InputComponentDataModel = {
     value: string;
@@ -111,7 +112,7 @@ class InputComponent extends SuperComponent<InputComponentDataModel, InputCompon
         const view = html`
             <div class="input">
                 <input step="1" class="${this.state === "INVALID" ? "is-invalid" : "is-valid"}" required type="number" value="${this.model.value}" @input=${this.handleInput} @blur=${this.handleBlur}>
-                <button type="button" @click=${this.generateNumbers} tooltip="Generate random numbers" class="button -grey -round -text icon-only" style="width:36px;top:calc((100% - 36px) * 0.5);position:absolute;right:0.5rem;" flex="items-center justify-center">
+                <button type="button" @click=${this.generateNumbers} tooltip="Generate random numbers" class="bttn" kind="text" color="grey" shape="round" icon="center" style="top:calc((100% - 36px) * 0.5);position:absolute;right:0.5rem;">
                     <svg class="m-0" style="width:16px;height:16px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
@@ -200,13 +201,32 @@ class PasswordGenerator extends SuperComponent<PasswordGeneratorModel, PasswordG
 
     private copyToClipboard:EventListener = () => {
         if ('clipboard' in navigator) {
-            navigator.clipboard.writeText(this.model.password).then(() => {});
+            navigator.clipboard.writeText(this.model.password).then(() => {
+                snackbar({
+                    message: "Password copied to clipboard.",
+                    duration: 10,
+                    force: true,
+                    closeable: true,
+                });
+            });
         } else {
             const input = this.querySelector("input");
             input.select();
             input.setSelectionRange(0, 99999);
             document.execCommand("copy");
+            snackbar({
+                message: "Password copied to clipboard.",
+                duration: 10,
+                force: true,
+                closeable: true,
+            });
         }
+    }
+
+    private selectInputValue:EventListener = (e:Event) => {
+        const input = e.currentTarget as HTMLInputElement;
+        input.select();
+        input.setSelectionRange(0, 99999);
     }
 
     render(){
@@ -228,34 +248,54 @@ class PasswordGenerator extends SuperComponent<PasswordGeneratorModel, PasswordG
                             </svg>
                         </i>
                     </div>
-                    <button class="block w-full button -solid -primary mt-1" @click=${this.next}>Next Step</button>
+                    <button class="w-full bttn mt-1" kind="solid" color="primary" shape="rounded" icon="right" @click=${this.next}>
+                        Next Step
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </button>
                 `;
                 break;
             case "INPUT":
                 view = html`
-                    <p class="block font-sm ${this.model.inputs < 5 ? "font-danger-600" : "font-grey-800"} text-center line-normal mb-1">For secure and rememberable passwords use 5 inputs.</p>
                     <form @submit=${this.generate} grid="columns 1 gap-1">
                         ${Array.from(Array(this.model.inputs)).map(() => {
                             return html`<input-component></input-component>`;
                         })}
-                        <div class="w-full" grid="columns 2 gap-1">
-                            <button type="button" class="button -solid -primary" @click=${this.addInput}>Add Input</button>
-                            <button type="submit" class="button -solid -success">Generate Password</button>
+                        <div class="w-full px-0.125" grid="columns 2 gap-1">
+                            <button type="button" class="bttn" kind="solid" color="primary" shape="rounded" icon="left" @click=${this.addInput}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Add Input
+                            </button>
+                            <button type="submit" class="bttn" kind="solid" color="success" shape="rounded" icon="left">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                                Generate Password
+                            </button>
                         </div>
                     </form>
+                    <p class="block font-sm ${this.model.inputs < 5 ? "font-danger-600" : "font-grey-800"} text-center line-normal mt-1">For secure and rememberable passwords use at least 5 inputs.</p>
                 `;
                 break;
             case "OUTPUT":
                 view = html`
                     <div class="input">
-                        <input type="text" readonly value="${this.model.password}" autofocus>
-                        <button @click=${this.copyToClipboard} class="button -grey -text -icon-only -round" tooltip="Copy to clipboard" flex="items-center justify-center" style="width:36px;height:36px;position:absolute;top:calc((100% - 36px) * 0.5);right:0.5rem">
+                        <input type="text" readonly value="${this.model.password}" autofocus @focus=${this.selectInputValue}>
+                        <button @click=${this.copyToClipboard} class="bttn" kind="text" color="grey" shape="round" icon="center" tooltip="Copy to clipboard" flex="items-center justify-center" style="width:36px;height:36px;position:absolute;top:calc((100% - 36px) * 0.5);right:0.5rem">
                             <svg style="width:18px;height:18px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
                             </svg>
                         </button>
                     </div>
-                    <button class="block w-full button -solid -primary mt-1" @click=${this.restart}>Restart</button>
+                    <button class="w-full bttn mt-1" kind="solid" color="primary" shape="rounded" icon="left" @click=${this.restart}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Restart
+                    </button>
                 `;
                 break;
         }

@@ -6,31 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diceware Password Generator</title>
     <link href="https://unpkg.com/brixi@0.3.3/brixi.min.css" rel="stylesheet">
-    <link href="/buttons.css" rel="stylesheet">
-    <link href="/select.css" rel="stylesheet">
-    <link href="/input.css" rel="stylesheet">
-    <link href="/tooltip.css" rel="stylesheet">
+    <link href="/css/normalize.css" rel="stylesheet">
+    <link href="/css/buttons.css" rel="stylesheet">
+    <link href="/css/select.css" rel="stylesheet">
+    <link href="/css/input.css" rel="stylesheet">
+    <link href="/css/tooltip.css" rel="stylesheet">
+    <link href="/css/snackbar.css" rel="stylesheet">
     <script defer src="/main.js"></script>
     <style>
         body{
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
-        *{
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
-            background: transparent;
-            border: none;
-        }
-        input[type="number"]{
-            -webkit-appearance: none;
+        input::-webkit-inner-spin-button,
+        input::-webkit-input-placeholder,
+        input::-webkit-outer-spin-button{
             appearance: none;
-            -moz-appearance: none;
-        }
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button{
             -webkit-appearance: none;
-            appearance: none;
         }
         @keyframes spin{
             from{
@@ -43,8 +34,9 @@
     </style>
 </head>
 <body class="m-0 w-screen py-6 px-1 bg-grey-200">
-    <main class="w-full max-w-mobile mx-auto">
-        <h1 class="block text-center font-xl font-grey-700 line-normal mb-3">Diceware Password Generator</h1>
+    <main class="w-full max-w-tablet mx-auto">
+        <h1 class="block text-center font-xl font-grey-700 line-normal mb-0.5 font-bold">Quantum Diceware Password Generator</h1>
+        <p class="block text-center font-grey-700 font-sm mb-3 line-normal">Generate truly random diceware passwords using a quantum computer.</p>
         <password-generator>Loading...</password-generator>
         <!-- Add Privacy FAQ Section -->
         <!-- Add Security Section -->

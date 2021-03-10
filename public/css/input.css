@@ -1,0 +1,103 @@
+.input {
+  display: inline-block;
+  width: 100%;
+  position: relative;
+}
+
+.input[state="invalid"] label {
+  color: var(--danger-700) !important;
+}
+
+.input[state="invalid"] input {
+  border-color: var(--danger-400);
+  background-color: var(--danger-100);
+}
+
+.input[state="invalid"] input:hover {
+  border-color: var(--danger-500);
+}
+
+.input[state="invalid"] input:focus {
+  border-color: var(--danger-500);
+  box-shadow: 0 0 0 5px var(--danger-100);
+}
+
+.input[state="invalid"] input::placeholder {
+  color: var(--danger-700);
+}
+
+.input[state="invalid"] i {
+  color: var(--danger-700);
+}
+
+.input label {
+  display: block;
+  width: 100%;
+  font-size: var(--font-sm);
+  font-weight: var(--font-medium);
+  color: var(--grey-800);
+  margin-bottom: 0.5rem;
+}
+
+.input input {
+  height: 48px;
+  display: block;
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 48px;
+  padding: 0 1rem;
+  background-color: var(--white);
+  border: 1px solid var(--grey-400);
+  border-radius: 0.25rem;
+  color: var(--grey-900);
+  transition: all 150ms var(--ease-in-out);
+}
+
+.input input::placeholder {
+  color: var(--grey-700);
+}
+
+.input input:hover {
+  border-color: var(--primary-400);
+}
+
+.input input:focus {
+  border-color: var(--primary-400);
+  box-shadow: 0 0 0 5px var(--primary-200);
+  background-color: var(--white);
+}
+
+.input input.has-icon {
+  padding-left: calc(24px + 1rem);
+}
+
+.input p {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: var(--font-xs);
+  color: var(--grey-700);
+  line-height: 1.375;
+}
+
+.input p.error {
+  color: var(--danger-700);
+}
+
+.input i {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+  position: absolute;
+  bottom: calc((48px - 24px) / 2);
+  left: 0.5rem;
+  color: var(--grey-700);
+}
+
+.input i svg {
+  width: 18px;
+  height: 18px;
+}

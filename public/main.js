@@ -8680,6 +8680,424 @@
   var globalTooltipper = new Tooltipper();
   var refresh = globalTooltipper.refresh.bind(globalTooltipper);
 
+  // node_modules/@codewithkyle/notifyjs/snackbar-component.js
+  var SnackbarComponent = class extends HTMLElement {
+    constructor(snackbar2) {
+      super();
+      this.handleActionButtonClick = (e) => {
+        const target = e.currentTarget;
+        const index = parseInt(target.dataset.index);
+        this.settings.buttons[index].callback();
+      };
+      this.handleCloseClickEvent = () => {
+        this.remove();
+      };
+      this.settings = snackbar2;
+      this.render();
+    }
+    render() {
+      this.dataset.uid = this.settings.uid;
+      for (let i = 0; i < this.settings.classes.length; i++) {
+        this.classList.add(this.settings.classes[i]);
+      }
+      const message = document.createElement("p");
+      message.innerText = this.settings.message;
+      if (this.settings.closeable || this.settings.buttons.length) {
+        message.setAttribute("role", "alertdialog");
+      } else {
+        message.setAttribute("role", "alert");
+      }
+      this.appendChild(message);
+      if (this.settings.closeable || this.settings.buttons.length) {
+        const actionsWrapper = document.createElement("snackbar-actions");
+        if (this.settings.buttons.length) {
+          for (let i = 0; i < this.settings.buttons.length; i++) {
+            const button = document.createElement("button");
+            button.innerText = this.settings.buttons[i].label;
+            button.dataset.index = `${i}`;
+            for (let k = 0; k < this.settings.buttons[i].classes.length; k++) {
+              button.classList.add(this.settings.buttons[i].classes[k]);
+            }
+            if (this.settings.buttons[i].ariaLabel) {
+              button.setAttribute("aria-label", this.settings.buttons[i].ariaLabel);
+            }
+            button.addEventListener("click", this.handleActionButtonClick);
+            actionsWrapper.appendChild(button);
+          }
+        }
+        if (this.settings.closeable) {
+          const closeButton = document.createElement("button");
+          closeButton.setAttribute("aria-label", "close notification");
+          closeButton.className = "close js-snackbar-close";
+          closeButton.innerHTML = '<svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="times" class="svg-inline--fa fa-times fa-w-10" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M207.6 256l107.72-107.72c6.23-6.23 6.23-16.34 0-22.58l-25.03-25.03c-6.23-6.23-16.34-6.23-22.58 0L160 208.4 52.28 100.68c-6.23-6.23-16.34-6.23-22.58 0L4.68 125.7c-6.23 6.23-6.23 16.34 0 22.58L112.4 256 4.68 363.72c-6.23 6.23-6.23 16.34 0 22.58l25.03 25.03c6.23 6.23 16.34 6.23 22.58 0L160 303.6l107.72 107.72c6.23 6.23 16.34 6.23 22.58 0l25.03-25.03c6.23-6.23 6.23-16.34 0-22.58L207.6 256z"></path></svg>';
+          closeButton.addEventListener("click", this.handleCloseClickEvent);
+          actionsWrapper.appendChild(closeButton);
+        }
+        this.appendChild(actionsWrapper);
+      }
+    }
+    connectedCallback() {
+      if (this.settings.autofocus) {
+        const closeButton = this.querySelector(".js-snackbar-close");
+        if (closeButton) {
+          closeButton.focus();
+        }
+      }
+      if (this.settings.buttons.length) {
+        for (let i = 0; i < this.settings.buttons.length; i++) {
+          if (this.settings.buttons[i].autofocus) {
+            const button = this.querySelector(`button[data-index="${i}"]`);
+            if (button) {
+              button.focus();
+              break;
+            }
+          }
+        }
+      }
+    }
+  };
+
+  // node_modules/@codewithkyle/notifyjs/toast-component.js
+  var ToastComponent = class extends HTMLElement {
+    constructor(snackbar2) {
+      super();
+      this.handleCloseClickEvent = () => {
+        this.remove();
+      };
+      this.handleActionButtonClick = (e) => {
+        const target = e.currentTarget;
+        const index = parseInt(target.dataset.index);
+        this.settings.buttons[index].callback();
+      };
+      this.settings = snackbar2;
+      this.render();
+    }
+    render() {
+      this.dataset.uid = this.settings.uid;
+      for (let i = 0; i < this.settings.classes.length; i++) {
+        this.classList.add(this.settings.classes[i]);
+      }
+      if (this.settings.icon) {
+        const icon = document.createElement("i");
+        icon.innerHTML = this.settings.icon;
+        this.appendChild(icon);
+      }
+      const copyWrapper = document.createElement("copy-wrapper");
+      const title = document.createElement("h3");
+      title.innerText = this.settings.title;
+      if (this.settings.closeable) {
+        title.setAttribute("role", "alertdialog");
+      } else {
+        title.setAttribute("role", "alert");
+      }
+      copyWrapper.appendChild(title);
+      const message = document.createElement("p");
+      message.innerText = this.settings.message;
+      copyWrapper.appendChild(message);
+      this.appendChild(copyWrapper);
+      if (this.settings.buttons.length) {
+        const actionsWrapper = document.createElement("toast-actions");
+        for (let i = 0; i < this.settings.buttons.length; i++) {
+          const button = document.createElement("button");
+          button.innerText = this.settings.buttons[i].label;
+          button.dataset.index = `${i}`;
+          for (let k = 0; k < this.settings.buttons[i].classes.length; k++) {
+            button.classList.add(this.settings.buttons[i].classes[k]);
+          }
+          if (this.settings.buttons[i].ariaLabel) {
+            button.setAttribute("aria-label", this.settings.buttons[i].ariaLabel);
+          }
+          button.addEventListener("click", this.handleActionButtonClick);
+          actionsWrapper.appendChild(button);
+        }
+        copyWrapper.appendChild(actionsWrapper);
+      }
+      if (this.settings.closeable) {
+        const closeButton = document.createElement("button");
+        closeButton.setAttribute("aria-label", "close notification");
+        closeButton.className = "close js-toast-close";
+        closeButton.innerHTML = '<svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="times" class="svg-inline--fa fa-times fa-w-10" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M207.6 256l107.72-107.72c6.23-6.23 6.23-16.34 0-22.58l-25.03-25.03c-6.23-6.23-16.34-6.23-22.58 0L160 208.4 52.28 100.68c-6.23-6.23-16.34-6.23-22.58 0L4.68 125.7c-6.23 6.23-6.23 16.34 0 22.58L112.4 256 4.68 363.72c-6.23 6.23-6.23 16.34 0 22.58l25.03 25.03c6.23 6.23 16.34 6.23 22.58 0L160 303.6l107.72 107.72c6.23 6.23 16.34 6.23 22.58 0l25.03-25.03c6.23-6.23 6.23-16.34 0-22.58L207.6 256z"></path></svg>';
+        closeButton.addEventListener("click", this.handleCloseClickEvent);
+        this.appendChild(closeButton);
+      }
+      if (this.settings.timer) {
+        const timer = document.createElement("toast-timer");
+        timer.className = this.settings.timer;
+        if (this.settings.timer === "horizontal") {
+          timer.style.transform = "scaleX(1)";
+        } else {
+          timer.style.transform = "scaleY(1)";
+        }
+        this.append(timer);
+      }
+    }
+    connectedCallback() {
+      if (this.settings.autofocus) {
+        const closeButton = this.querySelector(".js-toast-close");
+        if (closeButton) {
+          closeButton.focus();
+        }
+      }
+      if (this.settings.buttons.length) {
+        for (let i = 0; i < this.settings.buttons.length; i++) {
+          if (this.settings.buttons[i].autofocus) {
+            const button = this.querySelector(`button[data-index="${i}"]`);
+            if (button) {
+              button.focus();
+              break;
+            }
+          }
+        }
+      }
+    }
+  };
+
+  // node_modules/@codewithkyle/notifyjs/notifier.js
+  var Notifier = class {
+    constructor() {
+      this.snackbarQueue = [];
+      this.toaster = [];
+      this.time = performance.now();
+      this.loop();
+    }
+    uid() {
+      return new Array(4).fill(0).map(() => Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(16)).join("-");
+    }
+    loop() {
+      var _a, _b, _c, _d, _e, _f, _g, _h;
+      const newTime = performance.now();
+      const deltaTime = (newTime - this.time) / 1e3;
+      this.time = newTime;
+      if (document.hasFocus()) {
+        for (let i = this.toaster.length - 1; i >= 0; i--) {
+          if (((_a = this.toaster[i]) === null || _a === void 0 ? void 0 : _a.duration) && ((_b = this.toaster[i]) === null || _b === void 0 ? void 0 : _b.duration) !== Infinity) {
+            this.toaster[i].duration -= deltaTime;
+            if (this.toaster[i].timer) {
+              const scale = this.toaster[i].duration / this.toaster[i].timerDuration;
+              if (this.toaster[i].timer === "vertical") {
+                this.toaster[i].timerEl.style.transform = `scaleY(${scale})`;
+              } else {
+                this.toaster[i].timerEl.style.transform = `scaleX(${scale})`;
+              }
+            }
+            if (this.toaster[i].duration <= 0) {
+              this.toaster[i].el.remove();
+              this.toaster.splice(i, 1);
+            }
+          }
+        }
+        if (this.snackbarQueue.length) {
+          if (!((_d = (_c = this.snackbarQueue) === null || _c === void 0 ? void 0 : _c[0]) === null || _d === void 0 ? void 0 : _d.el)) {
+            this.snackbarQueue[0].el = new SnackbarComponent(this.snackbarQueue[0]);
+            document.body.appendChild(this.snackbarQueue[0].el);
+          }
+          if (((_e = this.snackbarQueue[0]) === null || _e === void 0 ? void 0 : _e.duration) && ((_f = this.snackbarQueue[0]) === null || _f === void 0 ? void 0 : _f.duration) !== Infinity && ((_h = (_g = this.snackbarQueue[0]) === null || _g === void 0 ? void 0 : _g.el) === null || _h === void 0 ? void 0 : _h.isConnected)) {
+            this.snackbarQueue[0].duration -= deltaTime;
+            if (this.snackbarQueue[0].duration <= 0) {
+              this.snackbarQueue[0].el.remove();
+              this.snackbarQueue.splice(0, 1);
+            }
+          }
+        }
+      }
+      window.requestAnimationFrame(this.loop.bind(this));
+    }
+    snackbar(settings) {
+      var _a, _b, _c, _d, _e, _f, _g, _h;
+      const snackbar2 = {};
+      if (!(settings === null || settings === void 0 ? void 0 : settings.message) || ((_a = settings === null || settings === void 0 ? void 0 : settings.message) === null || _a === void 0 ? void 0 : _a.length) === 0) {
+        console.error("Snackbar notificaitons require a message");
+        return;
+      }
+      snackbar2.message = settings.message;
+      snackbar2.uid = this.uid();
+      snackbar2.el = null;
+      let classes = [];
+      if (settings === null || settings === void 0 ? void 0 : settings.classes) {
+        if (Array.isArray(settings.classes)) {
+          classes = settings.classes;
+        } else {
+          classes = [settings.classes];
+        }
+      }
+      snackbar2.classes = classes;
+      if (typeof (settings === null || settings === void 0 ? void 0 : settings.duration) === "number" || (settings === null || settings === void 0 ? void 0 : settings.duration) === Infinity) {
+        snackbar2.duration = settings.duration;
+      } else {
+        snackbar2.duration = 3;
+      }
+      if (typeof (settings === null || settings === void 0 ? void 0 : settings.closeable) !== "undefined" && typeof (settings === null || settings === void 0 ? void 0 : settings.closeable) === "boolean") {
+        snackbar2.closeable = settings === null || settings === void 0 ? void 0 : settings.closeable;
+      } else {
+        snackbar2.closeable = true;
+      }
+      if (typeof (settings === null || settings === void 0 ? void 0 : settings.force) !== "undefined" && typeof (settings === null || settings === void 0 ? void 0 : settings.force) === "boolean") {
+        snackbar2.force = settings === null || settings === void 0 ? void 0 : settings.force;
+      } else {
+        snackbar2.force = false;
+      }
+      if (typeof (settings === null || settings === void 0 ? void 0 : settings.autofocus) !== "undefined" && typeof (settings === null || settings === void 0 ? void 0 : settings.autofocus) === "boolean") {
+        snackbar2.autofocus = settings.autofocus;
+      } else {
+        snackbar2.autofocus = true;
+      }
+      let buttons = [];
+      if (settings === null || settings === void 0 ? void 0 : settings.buttons) {
+        if (Array.isArray(settings.buttons)) {
+          buttons = settings.buttons;
+        } else {
+          buttons = [settings.buttons];
+        }
+      }
+      snackbar2.buttons = buttons;
+      for (let i = 0; i < snackbar2.buttons.length; i++) {
+        if ((_b = snackbar2.buttons[i]) === null || _b === void 0 ? void 0 : _b.classes) {
+          if (Array.isArray(snackbar2.buttons[i].classes)) {
+            snackbar2.buttons[i].classes = snackbar2.buttons[i].classes;
+          } else {
+            snackbar2.buttons[i].classes = [snackbar2.buttons[i].classes];
+          }
+        } else {
+          snackbar2.buttons[i].classes = [];
+        }
+        if (!((_c = snackbar2.buttons[i]) === null || _c === void 0 ? void 0 : _c.ariaLabel)) {
+          snackbar2.buttons[i].ariaLabel = null;
+        }
+        if (!((_d = snackbar2.buttons[i]) === null || _d === void 0 ? void 0 : _d.label)) {
+          console.error("Snackbar buttons require a label");
+          snackbar2.buttons[i].label = null;
+        }
+        if (!((_e = snackbar2.buttons[i]) === null || _e === void 0 ? void 0 : _e.callback)) {
+          console.error("Snackbar buttons require a callback function");
+          snackbar2.buttons[i].callback = () => {
+          };
+        }
+        if (!((_f = snackbar2.buttons[i]) === null || _f === void 0 ? void 0 : _f.autofocus)) {
+          snackbar2.buttons[i].autofocus = false;
+        } else {
+          snackbar2.autofocus = false;
+        }
+      }
+      if (snackbar2.force && this.snackbarQueue.length) {
+        if ((_h = (_g = this.snackbarQueue[0]) === null || _g === void 0 ? void 0 : _g.el) === null || _h === void 0 ? void 0 : _h.isConnected) {
+          this.snackbarQueue[0].el.remove();
+        }
+        this.snackbarQueue.splice(0, 1, snackbar2);
+      } else {
+        this.snackbarQueue.push(snackbar2);
+      }
+    }
+    toast(settings) {
+      var _a, _b, _c, _d, _e, _f, _g;
+      const toast2 = {};
+      if (!(settings === null || settings === void 0 ? void 0 : settings.message) || ((_a = settings === null || settings === void 0 ? void 0 : settings.message) === null || _a === void 0 ? void 0 : _a.length) === 0) {
+        console.error("Toast notificaitons require a message");
+        return;
+      } else if (!(settings === null || settings === void 0 ? void 0 : settings.title) || ((_b = settings === null || settings === void 0 ? void 0 : settings.title) === null || _b === void 0 ? void 0 : _b.length) === 0) {
+        console.error("Toast notificaitons require a title");
+        return;
+      }
+      toast2.title = settings.title;
+      toast2.message = settings.message;
+      toast2.uid = this.uid();
+      let classes = [];
+      if (settings === null || settings === void 0 ? void 0 : settings.classes) {
+        if (Array.isArray(settings.classes)) {
+          classes = settings.classes;
+        } else {
+          classes = [settings.classes];
+        }
+      }
+      toast2.classes = classes;
+      if (typeof (settings === null || settings === void 0 ? void 0 : settings.duration) === "number" || (settings === null || settings === void 0 ? void 0 : settings.duration) === Infinity) {
+        toast2.duration = settings.duration;
+      } else {
+        toast2.duration = 3;
+      }
+      if (typeof (settings === null || settings === void 0 ? void 0 : settings.closeable) !== "undefined" && typeof (settings === null || settings === void 0 ? void 0 : settings.closeable) === "boolean") {
+        toast2.closeable = settings.closeable;
+      } else {
+        toast2.closeable = true;
+      }
+      if ((settings === null || settings === void 0 ? void 0 : settings.icon) && typeof (settings === null || settings === void 0 ? void 0 : settings.icon) === "string") {
+        toast2.icon = settings.icon;
+      } else {
+        toast2.icon = null;
+      }
+      if (typeof (settings === null || settings === void 0 ? void 0 : settings.autofocus) !== "undefined" && typeof (settings === null || settings === void 0 ? void 0 : settings.autofocus) === "boolean") {
+        toast2.autofocus = settings.autofocus;
+      } else {
+        toast2.autofocus = false;
+      }
+      let buttons = [];
+      if (settings === null || settings === void 0 ? void 0 : settings.buttons) {
+        if (Array.isArray(settings.buttons)) {
+          buttons = settings.buttons;
+        } else {
+          buttons = [settings.buttons];
+        }
+      }
+      toast2.buttons = buttons;
+      for (let i = 0; i < toast2.buttons.length; i++) {
+        if ((_c = toast2.buttons[i]) === null || _c === void 0 ? void 0 : _c.classes) {
+          if (Array.isArray(toast2.buttons[i].classes)) {
+            toast2.buttons[i].classes = toast2.buttons[i].classes;
+          } else {
+            toast2.buttons[i].classes = [toast2.buttons[i].classes];
+          }
+        } else {
+          toast2.buttons[i].classes = [];
+        }
+        if (!((_d = toast2.buttons[i]) === null || _d === void 0 ? void 0 : _d.ariaLabel)) {
+          toast2.buttons[i].ariaLabel = null;
+        }
+        if (!((_e = toast2.buttons[i]) === null || _e === void 0 ? void 0 : _e.label)) {
+          console.error("Toaster buttons require a label");
+          toast2.buttons[i].label = null;
+        }
+        if (!((_f = toast2.buttons[i]) === null || _f === void 0 ? void 0 : _f.callback)) {
+          console.error("Toaster buttons require a callback function");
+          toast2.buttons[i].callback = () => {
+          };
+        }
+        if (!((_g = toast2.buttons[i]) === null || _g === void 0 ? void 0 : _g.autofocus)) {
+          toast2.buttons[i].autofocus = false;
+        } else {
+          toast2.autofocus = false;
+        }
+      }
+      if ((settings === null || settings === void 0 ? void 0 : settings.timer) && toast2.duration !== Infinity) {
+        if (settings.timer === "vertical" || settings.timer === "horizontal") {
+          toast2.timer = settings.timer;
+        } else {
+          console.error("Toaster timer value only accpets 'vertical' or 'horizontal'");
+          toast2.timer = null;
+        }
+        toast2.timerDuration = toast2.duration;
+      } else {
+        toast2.timer = null;
+      }
+      toast2.el = new ToastComponent(toast2);
+      if (toast2.timer) {
+        toast2.timerEl = toast2.el.querySelector("toast-timer");
+      }
+      this.toaster.push(toast2);
+      let shell = document.body.querySelector("toaster-component") || null;
+      if (!shell) {
+        shell = document.createElement("toaster-component");
+        document.body.appendChild(shell);
+      }
+      shell.appendChild(toast2.el);
+    }
+  };
+
+  // node_modules/@codewithkyle/notifyjs/notify.js
+  var globalNotifier = new Notifier();
+  var snackbar = globalNotifier.snackbar.bind(globalNotifier);
+  var toast = globalNotifier.toast.bind(globalNotifier);
+  customElements.define("snackbar-component", SnackbarComponent);
+  customElements.define("toast-component", ToastComponent);
+
   // src/main.ts
   var InputComponent = class extends supercomponent_default {
     constructor() {
@@ -8777,8 +9195,8 @@
     render() {
       const view = html`
             <div class="input">
-                <input class="${this.state === "INVALID" ? "is-invalid" : "is-valid"}" required type="number" value="${this.model.value}" @input=${this.handleInput} @blur=${this.handleBlur}>
-                <button type="button" @click=${this.generateNumbers} tooltip="Generate random numbers" class="button -grey -round -text icon-only" style="width:36px;top:calc((100% - 36px) * 0.5);position:absolute;right:0.5rem;" flex="items-center justify-center">
+                <input step="1" class="${this.state === "INVALID" ? "is-invalid" : "is-valid"}" required type="number" value="${this.model.value}" @input=${this.handleInput} @blur=${this.handleBlur}>
+                <button type="button" @click=${this.generateNumbers} tooltip="Generate random numbers" class="bttn" kind="text" color="grey" shape="round" icon="center" style="top:calc((100% - 36px) * 0.5);position:absolute;right:0.5rem;">
                     <svg class="m-0" style="width:16px;height:16px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
@@ -8826,13 +9244,30 @@
       this.copyToClipboard = () => {
         if ("clipboard" in navigator) {
           navigator.clipboard.writeText(this.model.password).then(() => {
+            snackbar({
+              message: "Password copied to clipboard.",
+              duration: 10,
+              force: true,
+              closeable: true
+            });
           });
         } else {
           const input = this.querySelector("input");
           input.select();
           input.setSelectionRange(0, 99999);
           document.execCommand("copy");
+          snackbar({
+            message: "Password copied to clipboard.",
+            duration: 10,
+            force: true,
+            closeable: true
+          });
         }
+      };
+      this.selectInputValue = (e) => {
+        const input = e.currentTarget;
+        input.select();
+        input.setSelectionRange(0, 99999);
       };
       this.state = "SEPARATOR";
       this.model = {
@@ -8879,34 +9314,54 @@
                             </svg>
                         </i>
                     </div>
-                    <button class="block w-full button -solid -primary mt-1" @click=${this.next}>Next Step</button>
+                    <button class="w-full bttn mt-1" kind="solid" color="primary" shape="rounded" icon="right" @click=${this.next}>
+                        Next Step
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </button>
                 `;
           break;
         case "INPUT":
           view = html`
-                    <p class="block font-sm ${this.model.inputs < 5 ? "font-danger-600" : "font-grey-800"} text-center line-normal mb-1">For secure and rememberable passwords use 5 inputs.</p>
                     <form @submit=${this.generate} grid="columns 1 gap-1">
                         ${Array.from(Array(this.model.inputs)).map(() => {
             return html`<input-component></input-component>`;
           })}
-                        <div class="w-full" grid="columns 2 gap-1">
-                            <button type="button" class="button -solid -primary" @click=${this.addInput}>Add Input</button>
-                            <button type="submit" class="button -solid -success">Generate Password</button>
+                        <div class="w-full px-0.125" grid="columns 2 gap-1">
+                            <button type="button" class="bttn" kind="solid" color="primary" shape="rounded" icon="left" @click=${this.addInput}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Add Input
+                            </button>
+                            <button type="submit" class="bttn" kind="solid" color="success" shape="rounded" icon="left">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                                Generate Password
+                            </button>
                         </div>
                     </form>
+                    <p class="block font-sm ${this.model.inputs < 5 ? "font-danger-600" : "font-grey-800"} text-center line-normal mt-1">For secure and rememberable passwords use at least 5 inputs.</p>
                 `;
           break;
         case "OUTPUT":
           view = html`
                     <div class="input">
-                        <input type="text" readonly value="${this.model.password}" autofocus>
-                        <button @click=${this.copyToClipboard} class="button -grey -text -icon-only -round" tooltip="Copy to clipboard" flex="items-center justify-center" style="width:36px;height:36px;position:absolute;top:calc((100% - 36px) * 0.5);right:0.5rem">
+                        <input type="text" readonly value="${this.model.password}" autofocus @focus=${this.selectInputValue}>
+                        <button @click=${this.copyToClipboard} class="bttn" kind="text" color="grey" shape="round" icon="center" tooltip="Copy to clipboard" flex="items-center justify-center" style="width:36px;height:36px;position:absolute;top:calc((100% - 36px) * 0.5);right:0.5rem">
                             <svg style="width:18px;height:18px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
                             </svg>
                         </button>
                     </div>
-                    <button class="block w-full button -solid -primary mt-1" @click=${this.restart}>Restart</button>
+                    <button class="w-full bttn mt-1" kind="solid" color="primary" shape="rounded" icon="left" @click=${this.restart}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Restart
+                    </button>
                 `;
           break;
       }

@@ -68,7 +68,16 @@ class InputComponent extends SuperComponent<InputComponentDataModel, InputCompon
         try {
             const request = await fetch("https://qrng.anu.edu.au/API/jsonI.php?length=10&type=uint16&size=1");
             const resonse = await request.json();
-            data = `${resonse.data.join("")}`;
+            const temp = `${resonse.data.join("")}`;
+            for (let i = 0; i < temp.length; i++){
+                const value = parseInt(temp[i]);
+                if (!isNaN(value) && value >= 1 && value <= 6){
+                    data += `${value}`;
+                }
+                if (data.length === 5){
+                    break;
+                }
+            }
         } catch (e){
             for (let i = 1; i <= 5; i++){
                 data += this.getRandomInt(1, 6);
@@ -80,18 +89,8 @@ class InputComponent extends SuperComponent<InputComponentDataModel, InputCompon
     private generateNumbers:EventListener = async () => {
         const button = this.querySelector("button");
         button.style.animation = "spin 600ms linear infinite";
-        const data = await this.getNumbers();
         const updatedModel = {...this.model};
-        updatedModel.value = "";
-        for (let i = 0; i < data.length; i++){
-            const value = parseInt(data[i]);
-            if (!isNaN(value) && value >= 1 && value <= 6){
-                updatedModel.value += `${value}`;
-            }
-            if (updatedModel.value.length === 5){
-                break;
-            }
-        }
+        updatedModel.value = await this.getNumbers();
         if (updatedModel.value.length < 5){
             const difference = 5 - updatedModel.value.length;
             for (let i = 1; i <= difference; i++){
@@ -110,9 +109,9 @@ class InputComponent extends SuperComponent<InputComponentDataModel, InputCompon
 
     render(){
         const view = html`
-            <div class="input" flex="row nowrap items-center">
-                <input style="flex:1;" class="${this.state === "INVALID" ? "is-invalid" : "is-valid"}" required type="number" value="${this.model.value}" @input=${this.handleInput} @blur=${this.handleBlur}>
-                <button type="button" @click=${this.generateNumbers} tooltip="Generate random numbers" class="button -white -round -solid icon-only p-0 m-0 mx-0.5" style="width:36px;" flex="items-center justify-center">
+            <div class="input">
+                <input step="1" class="${this.state === "INVALID" ? "is-invalid" : "is-valid"}" required type="number" value="${this.model.value}" @input=${this.handleInput} @blur=${this.handleBlur}>
+                <button type="button" @click=${this.generateNumbers} tooltip="Generate random numbers" class="button -grey -round -text icon-only" style="width:36px;top:calc((100% - 36px) * 0.5);position:absolute;right:0.5rem;" flex="items-center justify-center">
                     <svg class="m-0" style="width:16px;height:16px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>

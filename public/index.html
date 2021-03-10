@@ -22,6 +22,16 @@
             background: transparent;
             border: none;
         }
+        input[type="number"]{
+            -webkit-appearance: none;
+            appearance: none;
+            -moz-appearance: none;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button{
+            -webkit-appearance: none;
+            appearance: none;
+        }
         @keyframes spin{
             from{
                 transform: rotate(0deg);
@@ -35,7 +45,10 @@
 <body class="m-0 w-screen py-6 px-1 bg-grey-200">
     <main class="w-full max-w-mobile mx-auto">
         <h1 class="block text-center font-xl font-grey-700 line-normal mb-3">Diceware Password Generator</h1>
-        <password-generator></password-generator>
+        <password-generator>Loading...</password-generator>
+        <!-- Add Privacy FAQ Section -->
+        <!-- Add Security Section -->
+        <!-- Add Random Number Generator Source Section -->
     </main>
 </body>
 </html>

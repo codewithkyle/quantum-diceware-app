@@ -3,7 +3,7 @@ self.addEventListener('activate', event => event.waitUntil(onActivate(event)));
 self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
 
 const cacheNamePrefix = "offline-cache-";
-const version = "1.0.1";
+const version = "1.0.2";
 const cacheName = `${cacheNamePrefix}${version}`;
 const assets = [
     self.origin,
@@ -17,7 +17,24 @@ const assets = [
     "/css/snackbar.css",
     "/css/tooltip.css",
     "https://unpkg.com/brixi@0.3.3/brixi.min.css",
-    "/manifest.webmanifest"
+    "/manifest.webmanifest",
+    "/images/icon-16.png",
+    "/images/icon-32.png",
+    "/images/icon-128.png",
+    "/images/icon-129.png",
+    "/images/icon-144.png",
+    "/images/icon-152.png",
+    "/images/icon-180.png",
+    "/images/icon-256.png",
+    "/images/icon-384.png",
+    "/images/icon-512.png",
+    "/images/maskable/icon-48.png",
+    "/images/maskable/icon-72.png",
+    "/images/maskable/icon-96.png",
+    "/images/maskable/icon-128.png",
+    "/images/maskable/icon-192.png",
+    "/images/maskable/icon-384.png",
+    "/images/maskable/icon-512.png",
 ];
 
 async function onInstall(event) {
@@ -45,10 +62,5 @@ async function onFetch(event) {
         const cache = await caches.open(cacheName);
         cachedResponse = await cache.match(request);
     }
-    return cachedResponse || await fetch(event.request).then(async (response) => {
-        const clone = response.clone();
-        const cache = await caches.open(cacheName);
-        await cache.put(event.request, clone);
-        return response;
-    });
+    return cachedResponse || fetch(event.request);
 }

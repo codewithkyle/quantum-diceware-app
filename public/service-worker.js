@@ -3,7 +3,7 @@ self.addEventListener('activate', event => event.waitUntil(onActivate(event)));
 self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
 
 const cacheNamePrefix = "offline-cache-";
-const version = "1.0.2";
+const version = "1.0.3";
 const cacheName = `${cacheNamePrefix}${version}`;
 const assets = [
     self.origin,
